@@ -1,5 +1,5 @@
 # super cool check ride app
-
+from tabulate import tabulate
 def pressure_alt():
     standard_press = 29.92
     current_press = float(input("\nPlease enter current pressure: "))
@@ -29,25 +29,49 @@ def shortfield_takeoff_dist():
     sea_lvl_obs = [1190, 1290, 1390, 1495, 1605]
     one_thousand_ft_obs = [1310, 1420, 1530, 1645, 1770]
     two_thousand_ft_obs = [1445, 1565, 1690, 1820, 1960]
+
+
     current_temp = int(input('\nPlease enter current temperature (Celcius): '))
     pressure = int(input("\nPlease enter Pressure Altitude: "))
     # for loop to go through pressureAlts and temps then calc final values
     for i in range(len(temps)):
-        for j in range(len(pressureAlt)):
-            if temps[i] < current_temp < temps[i+1] and pressureAlt[j] < pressure < pressureAlt[j + 1]:
-                print(temps[i],temps[i+1],one_thousand_ft_grnd[j],one_thousand_ft_grnd[j+1], sea_lvl_grnd[i])
-                print("{}°C:{} ".format(temps[i],low:=(((one_thousand_ft_grnd[j] - sea_lvl_grnd[i]) * (pressure / 1000)) + sea_lvl_grnd[i])))
-                print("{}°C:{} ".format(temps[i+1],high:=(((one_thousand_ft_grnd[j+1] - sea_lvl_grnd[i+1]) * (pressure / 1000)) + sea_lvl_grnd[i+1])))
-                print("{}°C:{} ".format(current_temp,(((high - low) * (current_temp / 100)) + low)))
-
-
-
+        if temps[i] < current_temp < temps[i+1]:
+            print("{}°C:{} ".format(temps[i],low:=(((one_thousand_ft_grnd[i] - sea_lvl_grnd[i]) * (pressure / 1000)) + sea_lvl_grnd[i])))
+            print("{}°C:{} ".format(temps[i+1],high:=(((one_thousand_ft_grnd[i+1] - sea_lvl_grnd[i+1]) * (pressure / 1000)) + sea_lvl_grnd[i+1])))
+            print("{}°C:{} ".format(current_temp,(((high - low) * (current_temp / 100)) + low)))
+            middle = (((high - low) * (current_temp % 10)/10) + low)
+            header = ["{}°C".format(temps[i]),"{}°C".format(current_temp), "{}°C".format(temps[i+1])]
+            data = [[sea_lvl_grnd[i],(((sea_lvl_grnd[i+1] - sea_lvl_grnd[i]) * (current_temp % 10)/10) + sea_lvl_grnd[i]),sea_lvl_grnd[i+1]],
+                    [low,middle,high],
+                    [one_thousand_ft_grnd[i],(((one_thousand_ft_grnd[i+1] - one_thousand_ft_grnd[i]) * (current_temp % 10)/10) + one_thousand_ft_grnd[i]),one_thousand_ft_grnd[i+1]]
+                    ]
+            print("GROUND")
+            print(tabulate(data,headers=header,tablefmt="grid"))
+            print("{}°C:{} ".format(temps[i],low_obs:=(((one_thousand_ft_obs[i] - sea_lvl_obs[i]) * (pressure / 1000)) + sea_lvl_obs[i])))
+            print("{}°C:{} ".format(temps[i+1],high_obs:=(((one_thousand_ft_obs[i+1] - sea_lvl_obs[i+1]) * (pressure / 1000)) + sea_lvl_obs[i+1])))
+            print("{}°C:{} ".format(current_temp,(((high_obs - low_obs) * (current_temp / 100)) + low)))
+            middle_obs = (((high_obs - low_obs) * (current_temp % 10)/10) + low_obs)
+            header = ["{}°C".format(temps[i]),"{}°C".format(current_temp), "{}°C".format(temps[i+1])]
+            data = [[sea_lvl_obs[i],(((sea_lvl_grnd[i+1] - sea_lvl_obs[i]) * (current_temp % 10)/10) + sea_lvl_obs[i]),sea_lvl_obs[i+1]],
+                    [low_obs,middle_obs,high_obs],
+                    [one_thousand_ft_obs[i],(((one_thousand_ft_obs[i+1] - one_thousand_ft_obs[i]) * (current_temp % 10)/10) + one_thousand_ft_obs[i]),one_thousand_ft_obs[i+1]]
+                    ]
+            print("OBS")
+            print(tabulate(data,headers=header,tablefmt="grid"))
 
 
 
 def main():
+    ### for some reason it prints "none" and i dont know why but we can figure it out later
     print("\nWelcome to nana's sexy check ride calculator. *moans*")
-    shortfield_takeoff_dist()
+    print("\n 1.Calculate Pressure Altitude \n 2.Shortfield take off distance")
+    user = int(input(print("what would you like to do?:")))
+    if user == 1:
+        pressure_alt()
+    elif user == 2:
+        shortfield_takeoff_dist()
+    else:
+        print("Sorry, that was not an option!")
     print("\nThanks hoe, bye.")
 
 
