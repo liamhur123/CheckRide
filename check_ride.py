@@ -62,10 +62,9 @@ def shortfield_takeoff_dist():
 
 
 def main():
-    ### for some reason it prints "none" and i dont know why but we can figure it out later
     print("\nWelcome to nana's sexy check ride calculator. *moans*")
     print("\n 1.Calculate Pressure Altitude \n 2.Shortfield take off distance")
-    user = int(input(print("what would you like to do?:")))
+    user = int(input("what would you like to do?:"))
     if user == 1:
         pressure_alt()
     elif user == 2:
