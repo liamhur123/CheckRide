@@ -5,7 +5,7 @@ app.setSticky("news")
 
 
 def press(button):
-    if button == "Pressure Altitude":
+    if button == "Shortfield take off distance":
         app.setBg("Grey")
         removeall()
         ct = app.integerBox("current temperature","Enter current temperature")
@@ -37,10 +37,25 @@ def press(button):
         app.addLabel("t8", obs_data[2][1], 11, 6)
         app.setLabelBg("l5", "red")
         app.setLabelBg("t5", "red")
-    elif button == "Lets gamble!":
+        app.addButton("Main Menu", press)
+    elif button == "Pressure Altitude":
+        app.setBg("Grey")
         removeall()
-        app.startFrame("test",0,0)
-        app.stopFrame()
+        cp = app.floatBox("current pressure altitude","Enter current pressure altitude")
+        el = app.floatBox("pressure altitude","Enter pressure altitude")
+        pressure_diff, pressure_solve = cr.pressure_alt(cp,el)
+        app.addLabel("diff_clac", "29.92 - " + str(cp), 0, 0)
+        app.addLabel("difference", pressure_diff, 1, 0)
+        app.addLabel("multi", str(pressure_diff) + " x 1000", 2)
+        app.addLabel("something", pressure_diff * 1000,3  )
+        app.addLabel("add alt and press", str(pressure_diff * 1000) +" + "+ str(el), 4)
+        app.addFlashLabel("final", pressure_solve, 5)
+        app.setLabelBg("final", "green")
+        app.addButton("Main Menu",press)
+    elif button == "Main Menu":
+        start()
+
+
 
 def headers(ground_header,obs_header):
     app.addLabel("gh1", ground_header[0], 1, 0)
@@ -61,12 +76,16 @@ app.setBg("maroon")
 app.setFont(18)
 
 # add & configure widgets - widgets get a name, to help referencing them later
-app.addLabel("title", "Check Ride Calculator")
-app.setLabelBg("title", "maroon")
-app.setLabelFg("title", "white")
+def start():
+    app.removeAllWidgets()
+    app.setBg("maroon")
+    app.setFont(18)
+    app.addLabel("title", "Check Ride Calculator")
+    app.setLabelBg("title", "maroon")
+    app.setLabelFg("title", "white")
 
-app.addButton("Pressure Altitude",press)
-app.addButton("Shortfield take off distance",press)
+    app.addButton("Pressure Altitude",press)
+    app.addButton("Shortfield take off distance",press)
 
-
+start()
 app.go()

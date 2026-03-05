@@ -1,9 +1,9 @@
 # super cool check ride app
 from tabulate import tabulate
-def pressure_alt():
+def pressure_alt(current_press, airport_elav):
     standard_press = 29.92
-    current_press = float(input("\nPlease enter current pressure: "))
-    airport_elav = int(input("\nPlease enter airport elevation: "))
+    #current_press = float(input("\nPlease enter current pressure: "))
+    #airport_elav = int(input("\nPlease enter airport elevation: "))
     pressure_diff = round((standard_press - current_press), 3)
     pressure_solve = round(((pressure_diff * 1000) + airport_elav), 3)
     print('\nPressure altitude calculation:')
@@ -18,6 +18,7 @@ def pressure_alt():
           f'\n ------'
           f'\n{pressure_solve}')
     print(f"\nPressure altitude = '{pressure_solve}ft'")
+    return pressure_diff, pressure_solve
 
 
 def shortfield_takeoff_dist(current_temp, pressure):
@@ -84,3 +85,4 @@ def main():
 
 
 #main()
+
